@@ -23,6 +23,7 @@ void cashier_display()
     char ch_tmp;
     
     float should_get_money = -1;// 应收款
+    float sale_money_tmp = 0;   // 存放该用户自身的销售额
 
     printf("\n打卡成功！欢迎您上班，收银员 %s", my_cashier.relname);
     cashier_mean(&my_cashier);
@@ -50,28 +51,35 @@ void cashier_display()
             give_money(should_get_money);
             break;
         
-        /* xxxxx */
+        /* 查看个人信息 */
         case 3:
+            printf("\n正在查看个人信息...");
             information_show();
             printf("\n");
             break;
         
         /* 查看销售记录 */
         case 4:
+            printf("\n正在查看销售记录...");
             act_of_sale_show();
             break;
 
-        /* xxxxx */
+        /* 查看销售额 */
         case 5:
-            printf("\n该功能暂未开放。");
+            printf("\n正在查看销售额...");
+            if(0 != (sale_money_tmp = sales_my_money()))
+            {
+                printf("\n销售额为%.2f", sale_money_tmp);
+            }
+            printf("\n销售额为 0");
             break;
 
-        /* xxxxx */
+        /* 修改密码 */
         case 6:
             cashier_passwd_changed();
             break;
 
-        /* xxxxx */
+        /* 退出登录 */
         case 0:
             while (getchar() != '\n');
             
@@ -321,6 +329,40 @@ void act_of_sale_show()
     }
 
     fclose(fp_act_sale);
+}
+
+/***************************
+ * 查看自己的销售额
+ * 访问销售记录文件，遍历读取所有自己的销售信息，
+ *  并将其中的数字读取进行累加和
+***************************/
+float sales_my_money()
+{
+    FILE* fp = fopen(ACT_OF_SALE_FILE, "r");
+    float sum = 0;
+
+    if(NULL == fp)
+    {
+        perror("sales_my_money-fopen error");
+        return 0;
+    }
+
+    sale_log sale_log_tmp;
+
+    while(!feof(fp))
+    {
+        if(sizeof(sale_log) == fread(&sale_log_tmp, 1, sizeof(sale_log), fp))
+        {
+            if(!strcmp(sale_log_tmp.uname, cashier_found->uname))
+            {
+                sum += sale_log_tmp.quantity * sale_log_tmp.price;
+            }
+        }
+    }
+
+    fclose(fp);
+
+    return sum;
 }
 
 /***************************

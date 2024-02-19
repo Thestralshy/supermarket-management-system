@@ -163,15 +163,20 @@ int boss_login(void* username, void* passwd)
 ******************************/
 int cashier_login(void* username, void* passwd)
 {
-    FILE* fp = fopen(CASHIER_MSG_FILE, "r");
+    FILE* fp = fopen(CASHIER_MSG_FILE, "r+");
+
     if(NULL == fp)
     {
         perror("cashier_login-fopen");
         return 0;      // 文件打开失败，返回 0 表示失败
     }
+
     cashier_info cashier_tmp;
+
     char passwd_tmp[33];// 存放密码的指纹
     
+    int i = 0;
+
     // 密码转换为指纹后判断
     md5_string(passwd, passwd_tmp);
 
@@ -182,13 +187,25 @@ int cashier_login(void* username, void* passwd)
         if((!strcmp(cashier_tmp.uname, username)) 
         && (!strcmp(cashier_tmp.upass, passwd_tmp)))
         {
+            // 登录次数增加 1 次
             cashier_tmp.login_time++;
+
             printf("登录成功!");
             // 将读取到的数据保存到全局变量中
             *cashier_found = cashier_tmp;
 
+            // 将读取指针移动到本人信息开头
+            fseek(fp, i * sizeof(cashier_info), SEEK_SET);
+            
+            // 然后将该登录次数保存进文件
+            fwrite(&cashier_tmp, 1, sizeof(cashier_info), fp);
+
+            // 将所有修改正式写入到文件！
+            fclose(fp);
+
             return cashier_tmp.number; // 返回该用户的id号
         }
+        i++; // 每读取一个用户则计数 +1
     }
     
     fclose(fp);
