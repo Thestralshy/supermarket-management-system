@@ -184,6 +184,7 @@ void create_cashier_for_file(const char* addfile)
     if(NULL == fp_r || NULL == fp_a)
     {
         perror("create_cashier_for_file-fopen");
+        return;
     }
 
     while(!feof(fp_r))
