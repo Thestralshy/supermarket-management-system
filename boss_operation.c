@@ -87,7 +87,7 @@ void boss_display()
     char ch_tmp[128];
     char chs_to_stdin[128];
     
-    printf("\n欢迎使用《幻兽帕鲁》管理系统!");
+    printf("\n欢迎使用《幻兽收银员》管理系统!");
     mean();
 
     while(1)
@@ -99,11 +99,11 @@ void boss_display()
         switch(boss_choice)
         {
 
-        /* 1. 帕鲁 - 新增帕鲁 */
+        /* 1. 收银员 - 新增收银员 */
         /* 注意事项 */
         /* 每新增一个需要改写【注册时间】 */
         case 1:
-            printf("\n- 正在新增帕鲁...");
+            printf("\n- 正在新增收银员...");
             printf("\n请选择添加方式,或输入其他任意取消添加:");
             printf("\n1. 文件添加");
             printf("\n2. 手动添加");
@@ -133,24 +133,24 @@ void boss_display()
             }
             break;
 
-        /* 2. 帕鲁 - 肢解帕鲁 */
+        /* 2. 收银员 - 肢解收银员 */
         case 2:
-            printf("\n- 正在肢解帕鲁...");
+            printf("\n- 正在肢解收银员...");
             if(0 == delete_cashier())
             {
                 printf("\n删除成功！");
             }
             break;
             
-        /* 3. 帕鲁 - 修改帕鲁个人信息 */
+        /* 3. 收银员 - 修改收银员个人信息 */
         case 3:
-            printf("\n- 正在修改帕鲁个人信息...");
+            printf("\n- 正在修改收银员个人信息...");
             changed_cashier();
             break;
 
-        /* 4. 帕鲁 - 查找帕鲁个人信息 */
+        /* 4. 收银员 - 查找收银员个人信息 */
         case 4:
-            printf("\n- 正在检索帕鲁...");
+            printf("\n- 正在检索收银员...");
             printf("\n查找方式:");
             printf("\n1.指定信息查找 2.全部显示");
 
@@ -181,13 +181,13 @@ void boss_display()
             }
             break;
 
-        /* 5. 帕鲁 - 销售记录 */
+        /* 5. 收银员 - 销售记录 */
         case 5:
             printf("\n- 正在查询销售记录...");
             act_of_sale();// 所有销售记录查询
             break;
 
-        /* 6. 帕鲁 - 销售额 */
+        /* 6. 收银员 - 销售额 */
         case 6:
             printf("\n- 正在查询销售额...");
             money_tmp = sales_money();
@@ -808,12 +808,12 @@ void commodity_show(commodity* comm_tmp)
 void mean()
 {
     printf("\n********管理员控制面板********");
-    printf("\n* 1. 帕鲁 - 新增帕鲁");
-    printf("\n* 2. 帕鲁 - 肢解帕鲁");
-    printf("\n* 3. 帕鲁 - 修改帕鲁个人信息");
-    printf("\n* 4. 帕鲁 - 查找帕鲁个人信息");
-    printf("\n* 5. 帕鲁 - 销售记录");
-    printf("\n* 6. 帕鲁 - 销售额");
+    printf("\n* 1. 收银员 - 新增收银员");
+    printf("\n* 2. 收银员 - 肢解收银员");
+    printf("\n* 3. 收银员 - 修改收银员个人信息");
+    printf("\n* 4. 收银员 - 查找收银员个人信息");
+    printf("\n* 5. 收银员 - 销售记录");
+    printf("\n* 6. 收银员 - 销售额");
 
     printf("\n* 7. 商品 - 商品进货");
     printf("\n* 8. 商品 - 删除商品信息");  // 未完成
